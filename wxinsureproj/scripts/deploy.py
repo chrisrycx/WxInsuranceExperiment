@@ -10,10 +10,12 @@ def main():
     '''
     #Deploy the provider and propose a contract
     insurance = InsuranceProvider.deploy({'from':accounts[0]})
-    insurance.proposeContract('1 ether','0.01 ether',200,200,{'from':accounts[0],'value':'0.02 ether'})
+    insurance.proposeContract('1 ether','0.01 ether',200,{'from':accounts[0],'value':'0.02 ether'})
     insurance.proposals(1)
 
     #Accept the contract
     tx_accept = insurance.acceptContract(1,{'from':accounts[1],'value':'1 ether'})
-    tx_accept.events
+
+    #Load the new contract into an object
+    WxContract.at(tx_accept.new_contracts[0])
 
