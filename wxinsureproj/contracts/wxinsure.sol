@@ -3,16 +3,6 @@ pragma solidity >=0.4.22 <0.9.0;
 
 //Experimental Weather Insurance contract
 
-/*
-import "chainlink/contracts/ChainlinkClient.sol";
-import "chainlink/contracts/vendor/Ownable.sol";
-import "chainlink/contracts/interfaces/LinkTokenInterface.sol";
-import "chainlink/contracts/interfaces/AggregatorInterface.sol";
-import "chainlink/contracts/vendor/SafeMathChainlink.sol";
-import "chainlink/contracts/interfaces/AggregatorV3Interface.sol";
-*/
-//import "wxcontract.sol";
-
 contract WxContract {
     address oracle;  //This is the address that will provide the measured temperature
     address payable public insured;
@@ -36,12 +26,17 @@ contract WxContract {
         if(measured_temperature <= temperature){
             //Insurer gets premium + coverage
             insurer.transfer(coverage);
-            //self destruct?
+            selfdestruct(insurer);
         }else{
             //Insured gets funds
             insured.transfer(coverage);
-            //self destruct?
+            selfdestruct(insurer);
         }
+    }
+
+    function setTemp(uint16 _temperature) public {
+        require(msg.sender==oracle,"Only oracle can set temperature");
+        measured_ temperature = _temperature;
     }
 
 }
